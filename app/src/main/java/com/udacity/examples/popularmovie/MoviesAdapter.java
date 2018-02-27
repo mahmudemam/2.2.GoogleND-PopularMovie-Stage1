@@ -21,16 +21,22 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private static final String TAG = MoviesAdapter.class.getSimpleName();
 
     private Context mContext;
-    private List<Movie> movies;
+    private List<Movie> mMovies;
+    private OnItemClickListener mListener;
 
-    public MoviesAdapter(Context context, List<Movie> movies) {
+    public interface OnItemClickListener {
+        void onClick(Movie movie);
+    }
+
+    public MoviesAdapter(Context context, OnItemClickListener listener, List<Movie> movies) {
         mContext = context;
-        this.movies = movies;
+        mMovies = movies;
+        mListener = listener;
     }
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        holder.bind(movies.get(position));
+        holder.bind(mMovies.get(position));
     }
 
     @Override
@@ -41,7 +47,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return mMovies.size();
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
@@ -51,11 +57,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             super(view);
 
             movieImageView = view.findViewById(R.id.iv_movie_img);
+            movieImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onClick((Movie) view.getTag());
+                }
+            });
         }
 
         void bind(Movie movie) {
             Log.d(TAG, "Poster: " + movie.getPosterPath());
             NetworkUtils.loadImage(mContext, movie.getPosterPath(), movieImageView);
+            movieImageView.setTag(movie);
         }
     }
 }
