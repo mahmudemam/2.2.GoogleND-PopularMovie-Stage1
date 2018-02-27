@@ -10,9 +10,8 @@
         android:id="@+id/iv_movie_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/vertical_margin"
-        android:layout_marginEnd="@dimen/horizontal_margin"
         android:layout_marginStart="@dimen/horizontal_margin"
         android:layout_marginTop="@dimen/vertical_margin"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:scaleType="centerCrop"
+        app:srcCompat="@mipmap/ic_launcher"/>
 </FrameLayout>
