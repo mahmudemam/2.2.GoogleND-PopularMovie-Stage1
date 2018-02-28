@@ -10,7 +10,7 @@ public class Movie {
     private int voteCount;
     private int id;
     private boolean video;
-    private float voteAverage;
+    private double voteAverage;
     private String title;
     private double popularity;
     private String posterPath;
@@ -22,7 +22,7 @@ public class Movie {
     private String overview;
     private String releaseDate;
 
-    public Movie(int voteCount, int id, boolean video, float voteAverage, String title, double popularity, String posterPath, String originalLanguage, String originalTitle, int[] genreIds, String backdropPath, boolean adult, String overview, String releaseDate) {
+    public Movie(int voteCount, int id, boolean video, double voteAverage, String title, double popularity, String posterPath, String originalLanguage, String originalTitle, int[] genreIds, String backdropPath, boolean adult, String overview, String releaseDate) {
         this.voteCount = voteCount;
         this.id = id;
         this.video = video;
@@ -63,11 +63,11 @@ public class Movie {
         this.video = video;
     }
 
-    public float getVoteAverage() {
+    public double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(float voteAverage) {
+    public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
 

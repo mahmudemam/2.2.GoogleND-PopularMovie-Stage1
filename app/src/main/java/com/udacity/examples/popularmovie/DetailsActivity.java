@@ -37,7 +37,7 @@ public class DetailsActivity extends AppCompatActivity {
         String title = intent.getStringExtra(INTENT_MOVIE_TITLE_KEY);
         String poster = intent.getStringExtra(INTENT_MOVIE_POSTER_KEY);
         String releaseDate = intent.getStringExtra(INTENT_MOVIE_RELEASE_DATE_KEY);
-        Float vote = intent.getFloatExtra(INTENT_MOVIE_VOTE_KEY, 0);
+        double vote = intent.getDoubleExtra(INTENT_MOVIE_VOTE_KEY, 0);
         String synopsis = intent.getStringExtra(INTENT_MOVIE_SYNOPSIS_KEY);
 
         TextView titleTextView = findViewById(R.id.tv_title);
