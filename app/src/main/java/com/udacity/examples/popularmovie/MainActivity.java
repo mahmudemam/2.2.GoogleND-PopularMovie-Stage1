@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.utils.JsonUtils;
@@ -44,10 +46,38 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
         startActivity(detailsIntent);
     }
 
-    public class FetchingMovieTask extends AsyncTask<Void, Void, String> {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_popular_movies:
+                new FetchingMovieTask().execute(FetchingMovieTask.POPULAR_MOVIES_ID);
+                return true;
+            case R.id.menu_top_rated_movies:
+                new FetchingMovieTask().execute(FetchingMovieTask.TOP_RATED_MOVIES_ID);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public class FetchingMovieTask extends AsyncTask<Integer, Void, String> {
+        public static final int POPULAR_MOVIES_ID = 1;
+        public static final int TOP_RATED_MOVIES_ID = 2;
+
         @Override
-        protected String doInBackground(Void... voids) {
-            return NetworkUtils.loadPopularMovies();
+        protected String doInBackground(Integer... ids) {
+            if (ids[0] == POPULAR_MOVIES_ID)
+                return NetworkUtils.loadPopularMovies();
+            else if (ids[0] == TOP_RATED_MOVIES_ID)
+                return NetworkUtils.loadTopRatedMovies();
+            else return null;
         }
 
         @Override

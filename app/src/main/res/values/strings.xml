@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">PopularMovie</string>
+    <string name="app_name">The P Movies</string>
+    <string name="popular_movies">Popular</string>
+    <string name="top_rated_movies">Top Rated</string>
 </resources>
