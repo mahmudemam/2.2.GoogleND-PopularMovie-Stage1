@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.utils.JsonUtils;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView moviesRecyclerView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
         setContentView(R.layout.activity_main);
 
         moviesRecyclerView = findViewById(R.id.rv_movies);
+        progressBar = findViewById(R.id.pb_loading_bar);
 
         new FetchingMovieTask().execute(new Void[]{null});
     }
@@ -72,6 +76,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
         public static final int TOP_RATED_MOVIES_ID = 2;
 
         @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected String doInBackground(Integer... ids) {
             if (ids[0] == POPULAR_MOVIES_ID)
                 return NetworkUtils.loadPopularMovies();
@@ -82,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
 
         @Override
         protected void onPostExecute(String jsonStr) {
+            progressBar.setVisibility(View.INVISIBLE);
+
             List<Movie> movies = JsonUtils.parseMovies(jsonStr);
 
             MoviesAdapter adapter = new MoviesAdapter(MainActivity.this, MainActivity.this, movies);

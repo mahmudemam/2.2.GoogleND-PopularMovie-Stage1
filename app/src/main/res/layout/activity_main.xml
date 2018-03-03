@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.udacity.examples.popularmovie.MainActivity">
+    tools:context="com.udacity.examples.popularmovie.MainActivity" >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_movies"
@@ -11,5 +11,11 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/vertical_margin"
         android:layout_marginEnd="@dimen/horizontal_margin" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
 </FrameLayout>
