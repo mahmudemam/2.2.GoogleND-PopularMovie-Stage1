@@ -2,4 +2,5 @@
 <resources>
     <dimen name="horizontal_margin">8dp</dimen>
     <dimen name="vertical_margin">8dp</dimen>
+    <dimen name="img_height">200dp</dimen>
 </resources>
