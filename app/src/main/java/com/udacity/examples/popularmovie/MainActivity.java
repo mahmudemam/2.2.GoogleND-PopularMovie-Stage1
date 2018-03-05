@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
     }
 
     public class FetchingMovieTask extends AsyncTask<Void, Void, String> {
-        public static final int POPULAR_MOVIES_ID = 1;
-        public static final int TOP_RATED_MOVIES_ID = 2;
+        static final int POPULAR_MOVIES_ID = 1;
+        static final int TOP_RATED_MOVIES_ID = 2;
 
         @Override
         protected void onPreExecute() {
