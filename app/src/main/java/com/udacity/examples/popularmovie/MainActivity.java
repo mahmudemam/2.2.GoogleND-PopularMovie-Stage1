@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.utils.JsonUtils;
@@ -20,11 +21,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
-
+    private static final String SORT_ORDER_KEY = "SORT_ORDER";
     private RecyclerView moviesRecyclerView;
     private ProgressBar progressBar;
-
-    private static final String SORT_ORDER_KEY = "SORT_ORDER";
     private int sort_order = FetchingMovieTask.POPULAR_MOVIES_ID;
 
     @Override
@@ -35,11 +34,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
         moviesRecyclerView = findViewById(R.id.rv_movies);
         progressBar = findViewById(R.id.pb_loading_bar);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(SORT_ORDER_KEY)) {
-            sort_order = savedInstanceState.getInt(SORT_ORDER_KEY);
+        if (NetworkUtils.isNetworkActive(this)) {
+            if (savedInstanceState != null && savedInstanceState.containsKey(SORT_ORDER_KEY)) {
+                sort_order = savedInstanceState.getInt(SORT_ORDER_KEY);
+            }
+            new FetchingMovieTask().execute();
+        } else {
+            Toast.makeText(this, "Network Connection is not Active", Toast.LENGTH_SHORT).show();
+            finish();
         }
-        new FetchingMovieTask().execute();
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
