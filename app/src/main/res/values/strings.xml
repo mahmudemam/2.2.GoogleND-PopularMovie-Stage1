@@ -2,4 +2,6 @@
     <string name="app_name">The P Movies</string>
     <string name="popular_movies">Popular</string>
     <string name="top_rated_movies">Top Rated</string>
+    <string name="synposis_label">Synposis:</string>
+    <string name="released_label">Released:</string>
 </resources>
