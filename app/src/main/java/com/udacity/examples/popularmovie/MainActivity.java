@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
     private RecyclerView moviesRecyclerView;
     private ProgressBar progressBar;
 
+    private static final String SORT_ORDER_KEY = "SORT_ORDER";
+    private int sort_order = FetchingMovieTask.POPULAR_MOVIES_ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +35,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
         moviesRecyclerView = findViewById(R.id.rv_movies);
         progressBar = findViewById(R.id.pb_loading_bar);
 
-        new FetchingMovieTask().execute(new Void[]{null});
+        if (savedInstanceState != null && savedInstanceState.containsKey(SORT_ORDER_KEY)) {
+            sort_order = savedInstanceState.getInt(SORT_ORDER_KEY);
+        }
+        new FetchingMovieTask().execute();
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(SORT_ORDER_KEY, sort_order);
     }
 
     @Override
@@ -61,17 +73,19 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
         int id = item.getItemId();
         switch (id) {
             case R.id.menu_popular_movies:
-                new FetchingMovieTask().execute(FetchingMovieTask.POPULAR_MOVIES_ID);
+                sort_order = FetchingMovieTask.POPULAR_MOVIES_ID;
+                new FetchingMovieTask().execute();
                 return true;
             case R.id.menu_top_rated_movies:
-                new FetchingMovieTask().execute(FetchingMovieTask.TOP_RATED_MOVIES_ID);
+                sort_order = FetchingMovieTask.TOP_RATED_MOVIES_ID;
+                new FetchingMovieTask().execute();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public class FetchingMovieTask extends AsyncTask<Integer, Void, String> {
+    public class FetchingMovieTask extends AsyncTask<Void, Void, String> {
         public static final int POPULAR_MOVIES_ID = 1;
         public static final int TOP_RATED_MOVIES_ID = 2;
 
@@ -81,10 +95,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
         }
 
         @Override
-        protected String doInBackground(Integer... ids) {
-            if (ids[0] == POPULAR_MOVIES_ID)
+        protected String doInBackground(Void... voids) {
+            if (sort_order == POPULAR_MOVIES_ID)
                 return NetworkUtils.loadPopularMovies();
-            else if (ids[0] == TOP_RATED_MOVIES_ID)
+            else if (sort_order == TOP_RATED_MOVIES_ID)
                 return NetworkUtils.loadTopRatedMovies();
             else return null;
         }
