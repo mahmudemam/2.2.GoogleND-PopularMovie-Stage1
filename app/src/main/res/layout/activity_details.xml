@@ -13,15 +13,14 @@
 
         <ImageView
             android:id="@+id/iv_poster"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/horizontal_margin"
             android:layout_marginStart="@dimen/horizontal_margin"
             android:layout_marginTop="@dimen/vertical_margin"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/poster_content_description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            android:contentDescription="@string/poster_content_description" />
+            tools:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -40,10 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/horizontal_margin"
             android:layout_marginTop="@dimen/vertical_margin"
+            android:fontFamily="sans-serif-smallcaps"
             android:text="@string/released_label"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
 
@@ -52,6 +51,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/horizontal_margin"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBaseline_toBaselineOf="@+id/tv_release_label"
             app:layout_constraintStart_toEndOf="@+id/tv_release_label"
@@ -75,10 +76,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/horizontal_margin"
             android:layout_marginTop="@dimen/vertical_margin"
+            android:fontFamily="sans-serif-smallcaps"
             android:text="@string/synposis_label"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_release_label" />
 
@@ -97,6 +98,57 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_plot_synopsis_label"
             tools:text="Set in a post-apocalyptic world, young Thomas is deposited in a community of boys after his memory is erased, soon learning they're all trapped in a maze that will require him to join forces with fellow “runners” for a shot at escape" />
+
+        <ImageButton
+            android:id="@+id/ib_videos"
+            android:layout_width="@dimen/img_btn_size"
+            android:layout_height="@dimen/img_btn_size"
+            android:layout_marginStart="@dimen/img_btn_start"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:background="@android:color/white"
+            android:contentDescription="@string/videos_content_description"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toEndOf="@+id/iv_poster"
+            app:layout_constraintTop_toTopOf="@+id/iv_poster"
+            app:srcCompat="@drawable/ic_play" />
+
+        <ImageButton
+            android:id="@+id/ib_reviews"
+            android:layout_width="@dimen/img_btn_size"
+            android:layout_height="@dimen/img_btn_size"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:background="@android:color/white"
+            android:contentDescription="@string/reviews_content_description"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="@+id/ib_videos"
+            app:layout_constraintTop_toBottomOf="@+id/ib_videos"
+            app:srcCompat="@drawable/ic_reviews" />
+
+        <TextView
+            android:id="@+id/tv_videos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/horizontal_margin"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="@string/videos"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintStart_toEndOf="@+id/ib_videos"
+            app:layout_constraintTop_toTopOf="@+id/ib_videos" />
+
+        <TextView
+            android:id="@+id/tv_reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/horizontal_margin"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="@string/reviews"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintStart_toEndOf="@+id/ib_reviews"
+            app:layout_constraintTop_toTopOf="@+id/ib_reviews" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

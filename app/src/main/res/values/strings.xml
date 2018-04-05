@@ -5,4 +5,13 @@
     <string name="synposis_label">Synposis:</string>
     <string name="released_label">Released:</string>
     <string name="poster_content_description">A movie poster image</string>
+    <string name="title_activity_movie_videos">Videos</string>
+    <string name="trailer">Trailers</string>
+    <string name="clips">Clips</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="videos">Videos</string>
+    <string name="reviews">Reviews</string>
+    <string name="reviews_content_description">Reviews</string>
+    <string name="videos_content_description">Videos</string>
 </resources>
