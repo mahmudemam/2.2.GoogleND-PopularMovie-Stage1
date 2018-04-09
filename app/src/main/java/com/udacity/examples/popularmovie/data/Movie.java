@@ -1,6 +1,7 @@
 package com.udacity.examples.popularmovie.data;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Mahmoud Emam on 2/21/18.
@@ -21,6 +22,8 @@ public class Movie {
     private boolean adult;
     private String overview;
     private String releaseDate;
+
+    private List<Video> videos;
 
     public Movie(int voteCount, int id, boolean video, double voteAverage, String title, double popularity, String posterPath, String originalLanguage, String originalTitle, int[] genreIds, String backdropPath, boolean adult, String overview, String releaseDate) {
         this.voteCount = voteCount;
@@ -151,6 +154,14 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
+    public List<Video> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -169,5 +180,41 @@ public class Movie {
                 ", overview='" + overview + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
                 '}';
+    }
+
+    public static class Video {
+        String name;
+        String key;
+        String type;
+
+        public Video(String name, String key, String type) {
+            this.name = name;
+            this.key = key;
+            this.type = type;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
     }
 }

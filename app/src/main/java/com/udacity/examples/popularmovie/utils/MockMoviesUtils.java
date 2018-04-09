@@ -14,4 +14,12 @@ public class MockMoviesUtils {
             new Movie(4248, 284053, false, 7.4f, "Thor: Ragnarok", 318.100542, "/oSLd5GYGsiGgzDPKTwQh7wamO8t.jpg", "en", "Thor: Ragnarok", new int[] {878, 28, 12, 35, 14}, "/5wNUJs23rT5rTBacNyf5h83AynM.jpg", false, "Thor is imprisoned on the other side of the universe and finds himself in a race against time to get back to Asgard to stop Ragnarok, the prophecy of destruction to his homeworld and the end of Asgardian civilization, at the hands of an all-powerful new threat, the ruthless Hela.", "2017-10-25"),
             new Movie(1473, 284054, false, 7.4f, "Black Panther", 290.142649, "/bLBUCtMQGJclH36clliPLmljMys.jpg", "en", "Black Panther", new int[] {28, 12, 14, 878}, "/b6ZJZHUdMEFECvGiDpJjlfUWela.jpg", false, "After the events of Captain America: Civil War, King T'Challa returns home to the reclusive, technologically advanced African nation of Wakanda to serve as his country's new leader. However, T'Challa soon finds that he is challenged for the throne from factions within his own country. When two foes conspire to destroy Wakanda, the hero known as Black Panther must team up with C.I.A. agent Everett K. Ross and members of the Dora Milaje, Wakandan special forces, to prevent Wakanda from being dragged into a world war.", "2018-02-13")
     };
+
+    public static final Movie.Video[] MOCK_VIDEOS = {
+            new Movie.Video("\"Have a Donut\" Clip - Zootopia", "zQ2XkyDTW34", "Clip"),
+            new Movie.Video("Zootopia US Teaser Trailer", "g9lmhBYB11U", "Trailer"),
+            new Movie.Video("\"Elephant in the Room\" Clip - Zootopia", "b8hYj0ROMo4", "Clip"),
+            new Movie.Video("Zootopia Official US Trailer #2", "jWM0ct-OLsM", "Trailer"),
+            new Movie.Video("Zootopia Official US Sloth Trailer", "bY73vFGhSVk", "Trailer")
+    };
 }

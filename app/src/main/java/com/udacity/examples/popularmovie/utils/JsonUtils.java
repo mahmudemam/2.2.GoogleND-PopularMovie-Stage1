@@ -67,4 +67,30 @@ public class JsonUtils {
 
         return movies;
     }
+
+    public static List<Movie.Video> parseVideos(String jsonStr) {
+        List<Movie.Video> videos = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonStr);
+
+            JSONArray results = jsonObject.optJSONArray("results");
+
+            if (results != null) {
+                videos = new ArrayList<>(results.length());
+
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject videosObject = results.getJSONObject(i);
+
+                    videos.add(new Movie.Video(videosObject.optString("name", "No Name"),
+                            videosObject.optString("key", ""),
+                            videosObject.optString("type", "Trailer")));
+                }
+            }
+        } catch (JSONException ex) {
+            Log.e(TAG, "parseVideos: ", ex);
+        }
+
+        return videos;
+    }
 }
