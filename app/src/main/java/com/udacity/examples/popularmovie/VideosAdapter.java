@@ -10,15 +10,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.udacity.examples.popularmovie.data.Movie;
+import com.udacity.examples.popularmovie.data.Video;
 
 import java.util.List;
 
 public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewHolder> {
-    private List<Movie.Video> videos;
+    private List<Video> videos;
     private Context context;
     private OnVideoClickLinstener mListener;
 
-    public VideosAdapter(Context context, @NonNull List<Movie.Video> videos, @NonNull OnVideoClickLinstener listener) {
+    public VideosAdapter(Context context, @NonNull List<Video> videos, @NonNull OnVideoClickLinstener listener) {
         this.videos = videos;
         this.context = context;
         this.mListener = listener;
@@ -52,7 +53,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onVideoClick((Movie.Video) view.getTag());
+                    mListener.onVideoClick((Video) view.getTag());
                 }
             });
 
@@ -60,7 +61,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
             textView = view.findViewById(R.id.tv_video);
         }
 
-        void bind(Movie.Video video) {
+        void bind(Video video) {
             int imgRes = R.drawable.ic_trailer;
             if (!video.getType().equals("Trailer")) {
                 imgRes = R.drawable.ic_clip;
@@ -71,6 +72,6 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
     }
 
     public interface OnVideoClickLinstener {
-        void onVideoClick(Movie.Video video);
+        void onVideoClick(Video video);
     }
 }

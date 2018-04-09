@@ -3,6 +3,7 @@ package com.udacity.examples.popularmovie.utils;
 import android.util.Log;
 
 import com.udacity.examples.popularmovie.data.Movie;
+import com.udacity.examples.popularmovie.data.Video;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,8 +69,8 @@ public class JsonUtils {
         return movies;
     }
 
-    public static List<Movie.Video> parseVideos(String jsonStr) {
-        List<Movie.Video> videos = null;
+    public static List<Video> parseVideos(String jsonStr) {
+        List<Video> videos = null;
 
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
@@ -82,7 +83,7 @@ public class JsonUtils {
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject videosObject = results.getJSONObject(i);
 
-                    videos.add(new Movie.Video(videosObject.optString("name", "No Name"),
+                    videos.add(new Video(videosObject.optString("name", "No Name"),
                             videosObject.optString("key", ""),
                             videosObject.optString("type", "Trailer")));
                 }

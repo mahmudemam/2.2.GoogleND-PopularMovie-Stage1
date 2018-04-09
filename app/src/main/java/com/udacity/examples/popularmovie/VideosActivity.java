@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.udacity.examples.popularmovie.data.Movie;
+import com.udacity.examples.popularmovie.data.Video;
 import com.udacity.examples.popularmovie.utils.MockMoviesUtils;
 
 import java.util.Arrays;
@@ -37,7 +38,7 @@ public class VideosActivity extends AppCompatActivity {
 
                 new VideosAdapter.OnVideoClickLinstener() {
                     @Override
-                    public void onVideoClick(Movie.Video video) {
+                    public void onVideoClick(Video video) {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=nJCc5HRPxYA"));
                         if (intent.resolveActivity(getPackageManager()) != null) {
                             startActivity(intent);

@@ -9,14 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udacity.examples.popularmovie.data.Movie;
+import com.udacity.examples.popularmovie.data.Review;
 
 import java.util.List;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder> {
     private Context context;
-    private List<Movie.Review> reviews;
+    private List<Review> reviews;
 
-    public ReviewsAdapter(Context context, List<Movie.Review> reviews) {
+    public ReviewsAdapter(Context context, List<Review> reviews) {
         this.context = context;
         this.reviews = reviews;
     }
@@ -32,7 +33,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
     @Override
     public void onBindViewHolder(@NonNull ReviewsAdapter.ReviewViewHolder holder, int position) {
-        Movie.Review review = reviews.get(position);
+        Review review = reviews.get(position);
         holder.bind(position + 1, review);
     }
 
@@ -54,7 +55,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             comment = view.findViewById(R.id.tv_review_comment);
         }
 
-        public void bind(int seq, Movie.Review review) {
+        public void bind(int seq, Review review) {
             sequence.setText(String.valueOf(seq));
             author.setText(review.getAuthor());
             comment.setText(review.getComment());
