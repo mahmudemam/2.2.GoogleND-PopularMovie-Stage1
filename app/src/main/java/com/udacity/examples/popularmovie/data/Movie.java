@@ -24,6 +24,7 @@ public class Movie {
     private String releaseDate;
 
     private List<Video> videos;
+    private List<Review> reviews;
 
     public Movie(int voteCount, int id, boolean video, double voteAverage, String title, double popularity, String posterPath, String originalLanguage, String originalTitle, int[] genreIds, String backdropPath, boolean adult, String overview, String releaseDate) {
         this.voteCount = voteCount;
@@ -215,6 +216,32 @@ public class Movie {
 
         public void setType(String type) {
             this.type = type;
+        }
+    }
+
+    public static class Review {
+        private String author;
+        private String comment;
+
+        public Review(String author, String comment) {
+            this.author = author;
+            this.comment = comment;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public void setAuthor(String author) {
+            this.author = author;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
         }
     }
 }

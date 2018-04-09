@@ -17,18 +17,26 @@ public class DetailsActivity extends AppCompatActivity {
     public static final String INTENT_MOVIE_RELEASE_DATE_KEY = "RELEASE_DATE_KEY";
     public static final String INTENT_MOVIE_VOTE_KEY = "VOTE_KEY";
     public static final String INTENT_MOVIE_SYNOPSIS_KEY = "SYNOPSIS_KEY";
-    private ImageButton mVideoImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        mVideoImageButton = findViewById(R.id.ib_videos);
+        ImageButton mVideoImageButton = findViewById(R.id.ib_videos);
         mVideoImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DetailsActivity.this, MovieVideosActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton mReviewImageButton = findViewById(R.id.ib_reviews);
+        mReviewImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailsActivity.this, ReviewActivity.class);
                 startActivity(intent);
             }
         });

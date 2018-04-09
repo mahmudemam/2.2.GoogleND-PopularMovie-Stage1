@@ -36,6 +36,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.udacity.examples.popularmovie.DetailsActivity" />
         </activity>
+        <activity
+            android:name=".ReviewActivity"
+            android:label="@string/title_activity_reviews"
+            android:parentActivityName=".DetailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.udacity.examples.popularmovie.DetailsActivity" />
+        </activity>
     </application>
 
 </manifest>

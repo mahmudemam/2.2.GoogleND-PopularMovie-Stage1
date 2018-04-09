@@ -13,4 +13,5 @@
     <string name="reviews">Reviews</string>
     <string name="reviews_content_description">Reviews</string>
     <string name="videos_content_description">Videos</string>
+    <string name="title_activity_reviews">Reviews</string>
 </resources>
