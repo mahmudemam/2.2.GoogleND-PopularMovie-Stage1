@@ -27,7 +27,7 @@ public class DetailsActivity extends AppCompatActivity {
         mVideoImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DetailsActivity.this, MovieVideosActivity.class);
+                Intent intent = new Intent(DetailsActivity.this, VideosActivity.class);
                 startActivity(intent);
             }
         });

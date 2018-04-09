@@ -13,12 +13,12 @@ import com.udacity.examples.popularmovie.data.Movie;
 
 import java.util.List;
 
-public class MovieVideosAdapter extends RecyclerView.Adapter<MovieVideosAdapter.VideoViewHolder> {
+public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewHolder> {
     private List<Movie.Video> videos;
     private Context context;
     private OnVideoClickLinstener mListener;
 
-    public MovieVideosAdapter(Context context, @NonNull List<Movie.Video> videos, @NonNull OnVideoClickLinstener listener) {
+    public VideosAdapter(Context context, @NonNull List<Movie.Video> videos, @NonNull OnVideoClickLinstener listener) {
         this.videos = videos;
         this.context = context;
         this.mListener = listener;

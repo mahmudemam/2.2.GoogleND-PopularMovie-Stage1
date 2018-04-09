@@ -21,7 +21,7 @@ import com.udacity.examples.popularmovie.utils.MockMoviesUtils;
 
 import java.util.Arrays;
 
-public class MovieVideosActivity extends AppCompatActivity {
+public class VideosActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -52,7 +52,7 @@ public class MovieVideosActivity extends AppCompatActivity {
         int id = intent.getIntExtra(MOVIE_ID_KEY, 0);
 */
 
-        setContentView(R.layout.activity_movie_videos);
+        setContentView(R.layout.activity_videos);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -99,15 +99,15 @@ public class MovieVideosActivity extends AppCompatActivity {
         @Override
         public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_movie_videos, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_videos, container, false);
 
             RecyclerView videoRecyclerView = rootView.findViewById(R.id.rv_videos);
 
             videoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-            MovieVideosAdapter adapter = new MovieVideosAdapter(getContext(), Arrays.asList(MockMoviesUtils.MOCK_VIDEOS),
+            VideosAdapter adapter = new VideosAdapter(getContext(), Arrays.asList(MockMoviesUtils.MOCK_VIDEOS),
 
-                    new MovieVideosAdapter.OnVideoClickLinstener() {
+                    new VideosAdapter.OnVideoClickLinstener() {
                         @Override
                         public void onVideoClick(Movie.Video video) {
                             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=nJCc5HRPxYA"));

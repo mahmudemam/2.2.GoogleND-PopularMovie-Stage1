@@ -28,7 +28,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".MovieVideosActivity"
+            android:name=".VideosActivity"
             android:label="@string/title_activity_movie_videos"
             android:parentActivityName=".DetailsActivity"
             android:theme="@style/AppTheme.NoActionBar">
