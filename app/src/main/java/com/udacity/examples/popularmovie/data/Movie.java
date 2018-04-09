@@ -1,13 +1,23 @@
 package com.udacity.examples.popularmovie.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Mahmoud Emam on 2/21/18.
- */
+public class Movie implements Parcelable {
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel parcel) {
+            return new Movie(parcel);
+        }
 
-public class Movie {
+        @Override
+        public Movie[] newArray(int i) {
+            return new Movie[i];
+        }
+    };
     private int voteCount;
     private int id;
     private boolean video;
@@ -22,9 +32,19 @@ public class Movie {
     private boolean adult;
     private String overview;
     private String releaseDate;
-
     private List<Video> videos;
     private List<Review> reviews;
+
+    private Movie(Parcel parcel) {
+        voteCount = parcel.readInt();
+        id = parcel.readInt();
+        voteAverage = parcel.readDouble();
+        title = parcel.readString();
+        posterPath = parcel.readString();
+        backdropPath = parcel.readString();
+        overview = parcel.readString();
+        releaseDate = parcel.readString();
+    }
 
     public Movie(int voteCount, int id, boolean video, double voteAverage, String title, double popularity, String posterPath, String originalLanguage, String originalTitle, int[] genreIds, String backdropPath, boolean adult, String overview, String releaseDate) {
         this.voteCount = voteCount;
@@ -181,5 +201,22 @@ public class Movie {
                 ", overview='" + overview + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
                 '}';
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(voteCount);
+        parcel.writeInt(id);
+        parcel.writeDouble(voteAverage);
+        parcel.writeString(title);
+        parcel.writeString(posterPath);
+        parcel.writeString(backdropPath);
+        parcel.writeString(overview);
+        parcel.writeString(releaseDate);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 }

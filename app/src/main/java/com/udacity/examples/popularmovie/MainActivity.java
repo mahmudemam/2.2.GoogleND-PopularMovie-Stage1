@@ -57,12 +57,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
         Log.d(TAG, "Listener: " + movie.toString());
 
         Intent detailsIntent = new Intent(this, DetailsActivity.class);
-
-        detailsIntent.putExtra(DetailsActivity.INTENT_MOVIE_TITLE_KEY, movie.getTitle());
-        detailsIntent.putExtra(DetailsActivity.INTENT_MOVIE_POSTER_KEY, movie.getBackdropPath());
-        detailsIntent.putExtra(DetailsActivity.INTENT_MOVIE_RELEASE_DATE_KEY, movie.getReleaseDate());
-        detailsIntent.putExtra(DetailsActivity.INTENT_MOVIE_VOTE_KEY, movie.getVoteAverage());
-        detailsIntent.putExtra(DetailsActivity.INTENT_MOVIE_SYNOPSIS_KEY, movie.getOverview());
+        detailsIntent.putExtra(DetailsActivity.INTENT_MOVIE_KEY, movie);
 
         startActivity(detailsIntent);
     }

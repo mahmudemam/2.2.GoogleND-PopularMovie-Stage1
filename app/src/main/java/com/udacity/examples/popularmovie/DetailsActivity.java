@@ -8,15 +8,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    public static final String INTENT_MOVIE_TITLE_KEY = "TITLE_KEY";
-    public static final String INTENT_MOVIE_POSTER_KEY = "POSTER_KEY";
-    public static final String INTENT_MOVIE_RELEASE_DATE_KEY = "RELEASE_DATE_KEY";
-    public static final String INTENT_MOVIE_VOTE_KEY = "VOTE_KEY";
-    public static final String INTENT_MOVIE_SYNOPSIS_KEY = "SYNOPSIS_KEY";
+    public static final String INTENT_MOVIE_KEY = "MOVIE_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,17 +45,12 @@ public class DetailsActivity extends AppCompatActivity {
             return;
         }
 
-        if (!intent.hasExtra(INTENT_MOVIE_TITLE_KEY) || !intent.hasExtra(INTENT_MOVIE_POSTER_KEY) || !intent.hasExtra(INTENT_MOVIE_RELEASE_DATE_KEY) ||
-                !intent.hasExtra(INTENT_MOVIE_VOTE_KEY) || !intent.hasExtra(INTENT_MOVIE_SYNOPSIS_KEY)) {
+        if (!intent.hasExtra(INTENT_MOVIE_KEY)) {
             finish();
             return;
         }
 
-        String title = intent.getStringExtra(INTENT_MOVIE_TITLE_KEY);
-        String poster = intent.getStringExtra(INTENT_MOVIE_POSTER_KEY);
-        String releaseDate = intent.getStringExtra(INTENT_MOVIE_RELEASE_DATE_KEY);
-        double vote = intent.getDoubleExtra(INTENT_MOVIE_VOTE_KEY, 0);
-        String synopsis = intent.getStringExtra(INTENT_MOVIE_SYNOPSIS_KEY);
+        Movie movie = intent.getParcelableExtra(INTENT_MOVIE_KEY);
 
         TextView titleTextView = findViewById(R.id.tv_title);
         TextView releaseDateTextView = findViewById(R.id.tv_release_date);
@@ -66,11 +58,11 @@ public class DetailsActivity extends AppCompatActivity {
         TextView synopsisTextView = findViewById(R.id.tv_plot_synopsis);
         ImageView posterImageView = findViewById(R.id.iv_poster);
 
-        titleTextView.setText(title);
-        releaseDateTextView.setText(releaseDate);
-        voteTextView.setText(String.valueOf(vote));
-        synopsisTextView.setText(synopsis);
+        titleTextView.setText(movie.getTitle());
+        releaseDateTextView.setText(movie.getReleaseDate());
+        voteTextView.setText(String.valueOf(movie.getVoteAverage()));
+        synopsisTextView.setText(movie.getOverview());
 
-        NetworkUtils.loadImage(this, poster, posterImageView);
+        NetworkUtils.loadImage(this, movie.getBackdropPath(), posterImageView);
     }
 }
