@@ -61,6 +61,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DetailsActivity.this, ReviewActivity.class);
+                intent.putExtra(ReviewActivity.INTENT_KEY_MOVIE, movie);
                 startActivity(intent);
             }
         });

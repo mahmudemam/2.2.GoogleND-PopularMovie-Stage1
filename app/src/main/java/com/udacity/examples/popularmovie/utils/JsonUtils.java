@@ -3,6 +3,7 @@ package com.udacity.examples.popularmovie.utils;
 import android.util.Log;
 
 import com.udacity.examples.popularmovie.data.Movie;
+import com.udacity.examples.popularmovie.data.Review;
 import com.udacity.examples.popularmovie.data.Video;
 
 import org.json.JSONArray;
@@ -93,5 +94,30 @@ public class JsonUtils {
         }
 
         return videos;
+    }
+
+    public static List<Review> parseReviews(String jsonStr) {
+        List<Review> reviews = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonStr);
+
+            JSONArray results = jsonObject.optJSONArray("results");
+
+            if (results != null) {
+                reviews = new ArrayList<>(results.length());
+
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject videosObject = results.getJSONObject(i);
+
+                    reviews.add(new Review(videosObject.optString("author", "No Name"),
+                            videosObject.optString("content", "")));
+                }
+            }
+        } catch (JSONException ex) {
+            Log.e(TAG, "parseReviews: ", ex);
+        }
+
+        return reviews;
     }
 }

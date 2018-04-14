@@ -27,7 +27,7 @@ public class NetworkUtils {
     private static final String POPULAR_MOVIES_URL = BASE_URL + "popular";
     private static final String TOP_RATED_MOVIES_URL = BASE_URL + "top_rated";
 
-    private static final String IMG_BASE_URL = "http://image.tmdb.org/t/p/w500/";
+    private static final String IMG_BASE_URL = "http://image.tmdb.org/t/p/w780/";
 
     public static String loadPopularMovies() {
         return fetchMovies(POPULAR_MOVIES_URL);
@@ -35,6 +35,14 @@ public class NetworkUtils {
 
     public static String loadTopRatedMovies() {
         return fetchMovies(TOP_RATED_MOVIES_URL);
+    }
+
+    public static String loadVideos(int id) {
+        return fetchMovies(BASE_URL + id + "/videos");
+    }
+
+    public static String loadReviews(int id) {
+        return fetchMovies(BASE_URL + id + "/reviews");
     }
 
     private static String fetchMovies(String urlString) {
