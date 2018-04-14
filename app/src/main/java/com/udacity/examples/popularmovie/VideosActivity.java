@@ -9,6 +9,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.data.Video;
@@ -22,6 +23,8 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
     public static final String BUNDLE_KEY_MOVIE_ID = "MOVIE_ID";
     private static final int MOVIE_DETAILS_LOADER_ID = 100;
 
+    private Movie movie;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +34,7 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
         if (intent == null || !intent.hasExtra(INTENT_KEY_MOVIE))
             finish();
 
-        Movie movie = intent.getParcelableExtra(INTENT_KEY_MOVIE);
+        movie = intent.getParcelableExtra(INTENT_KEY_MOVIE);
 
         if (movie == null) {
             finish();
@@ -92,6 +95,10 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoadFinished(Loader loader, Object o) {
         String jsonStr = (String) o;
         List<Video> videos = JsonUtils.parseVideos(jsonStr);
+        if (videos == null || videos.size() == 0) {
+            Toast.makeText(this, "There is no videos for " + movie.getTitle(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         RecyclerView videoRecyclerView = findViewById(R.id.rv_videos);
 
