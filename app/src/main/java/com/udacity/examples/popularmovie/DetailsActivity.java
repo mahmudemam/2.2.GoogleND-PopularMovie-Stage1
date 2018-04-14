@@ -12,31 +12,12 @@ import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
 public class DetailsActivity extends AppCompatActivity {
-
     public static final String INTENT_MOVIE_KEY = "MOVIE_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-
-        ImageButton mVideoImageButton = findViewById(R.id.ib_videos);
-        mVideoImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DetailsActivity.this, VideosActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ImageButton mReviewImageButton = findViewById(R.id.ib_reviews);
-        mReviewImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DetailsActivity.this, ReviewActivity.class);
-                startActivity(intent);
-            }
-        });
 
         Intent intent = getIntent();
 
@@ -50,7 +31,7 @@ public class DetailsActivity extends AppCompatActivity {
             return;
         }
 
-        Movie movie = intent.getParcelableExtra(INTENT_MOVIE_KEY);
+        final Movie movie = intent.getParcelableExtra(INTENT_MOVIE_KEY);
 
         TextView titleTextView = findViewById(R.id.tv_title);
         TextView releaseDateTextView = findViewById(R.id.tv_release_date);
@@ -64,5 +45,24 @@ public class DetailsActivity extends AppCompatActivity {
         synopsisTextView.setText(movie.getOverview());
 
         NetworkUtils.loadImage(this, movie.getBackdropPath(), posterImageView);
+
+        ImageButton mVideoImageButton = findViewById(R.id.ib_videos);
+        mVideoImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailsActivity.this, VideosActivity.class);
+                intent.putExtra(VideosActivity.INTENT_KEY_MOVIE, movie);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton mReviewImageButton = findViewById(R.id.ib_reviews);
+        mReviewImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailsActivity.this, ReviewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

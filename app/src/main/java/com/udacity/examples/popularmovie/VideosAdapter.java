@@ -68,6 +68,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
             }
             imageButton.setImageResource(imgRes);
             textView.setText(video.getName());
+            itemView.setTag(video);
         }
     }
 
