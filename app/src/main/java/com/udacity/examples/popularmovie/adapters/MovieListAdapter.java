@@ -28,4 +28,10 @@ public class MovieListAdapter extends MoviesAdapter {
     public int getItemCount() {
         return mMovies.size();
     }
+
+    @Override
+    public void dataChanged(Object data) {
+        mMovies = (List<Movie>) data;
+        notifyDataSetChanged();
+    }
 }

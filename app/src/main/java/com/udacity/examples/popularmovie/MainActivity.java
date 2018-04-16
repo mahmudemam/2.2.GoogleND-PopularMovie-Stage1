@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
     private ProgressBar progressBar;
     private int sort_order = FetchingMovieTask.POPULAR_MOVIES_ID;
 
+    private MoviesAdapter adapter;
+    private Object movies;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
             ContentProviderUtils.addFavoriteMovie(this, movie);
         else
             ContentProviderUtils.removeFavoriteMovie(this, movie);
+
+        adapter.dataChanged(movies);
     }
 
     @Override
@@ -124,14 +129,14 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         }
 
         @Override
-        protected void onPostExecute(Object movies) {
+        protected void onPostExecute(Object data) {
             progressBar.setVisibility(View.INVISIBLE);
 
-            MoviesAdapter adapter;
             if (sort_order != FAVORITE_MOVIES_ID) {
-                List<Movie> movieList = JsonUtils.parseMovies((String) movies);
-                adapter = new MovieListAdapter(MainActivity.this, MainActivity.this, movieList);
+                movies = JsonUtils.parseMovies((String) data);
+                adapter = new MovieListAdapter(MainActivity.this, MainActivity.this, (List<Movie>) movies);
             } else {
+                movies = data;
                 adapter = new MovieCursorAdapter(MainActivity.this, MainActivity.this, (Cursor) movies);
             }
             moviesRecyclerView.setAdapter(adapter);

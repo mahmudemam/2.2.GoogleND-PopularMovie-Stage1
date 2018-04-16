@@ -41,6 +41,8 @@ public abstract class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.M
         return new MovieViewHolder(view);
     }
 
+    public abstract void dataChanged(Object data);
+
     class MovieViewHolder extends RecyclerView.ViewHolder {
         private final ImageView movieImageView;
         private final ImageButton favoriteImageButton;
@@ -61,10 +63,14 @@ public abstract class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.M
                 @Override
                 public void onClick(View view) {
                     boolean selected = !view.isSelected();
+
                     Movie movie = (Movie) itemView.getTag();
                     movie.setFavorite(selected);
+
                     mListener.onFavoritePressed(movie, selected);
+
                     view.setSelected(selected);
+                    Log.v(TAG, "Fav Button: " + view.isSelected());
                 }
             });
         }

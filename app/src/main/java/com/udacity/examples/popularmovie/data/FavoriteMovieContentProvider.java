@@ -8,8 +8,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 public class FavoriteMovieContentProvider extends ContentProvider {
+    private static final String TAG = FavoriteMovieContentProvider.class.getSimpleName();
     private FavoriteMoviesDBHelper favoriteMoviesDBHelper;
 
     private static final int MOVIES_CODE = 100;
@@ -86,6 +88,9 @@ public class FavoriteMovieContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, String[] selectionArgs) {
+        Log.v(TAG, "delete: Started");
+        Log.v(TAG, "delete: uri=" + uri.toString());
+
         int code = URI_MATCHER.match(uri);
         int noOfDeleted = 0;
         switch (code) {
@@ -97,11 +102,13 @@ public class FavoriteMovieContentProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Not yet implemented");
         }
+        Log.v(TAG, "delete: deletedRows=" + noOfDeleted);
 
         if (noOfDeleted > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
+        Log.v(TAG, "delete: Finished");
         return noOfDeleted;
     }
 
