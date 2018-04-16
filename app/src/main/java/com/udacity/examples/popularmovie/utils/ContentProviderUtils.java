@@ -37,7 +37,9 @@ public class ContentProviderUtils {
     }
 
     public static boolean isFavorite(Context context, Movie movie) {
-        Uri movieWithIdUri = FavoriteMoviesContract.MovieEntry.CONTENT_URI.buildUpon().appendPath("/" + movie.getId()).build();
+        Uri movieWithIdUri = FavoriteMoviesContract.MovieEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(movie.getId())).build();
+        Log.v(TAG, movieWithIdUri.toString());
+
         Cursor cursor = context.getContentResolver().query(movieWithIdUri, null, null, null, null);
 
         return  (cursor != null && cursor.getCount() == 1);

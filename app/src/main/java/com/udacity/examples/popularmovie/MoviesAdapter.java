@@ -20,11 +20,12 @@ import com.udacity.examples.popularmovie.utils.NetworkUtils;
 public abstract class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
     private static final String TAG = MoviesAdapter.class.getSimpleName();
 
-    private final Context mContext;
+    protected final Context mContext;
     private final OnMovieClickListener mListener;
 
     public interface OnMovieClickListener {
         void onImageClicked(Movie movie);
+
         void onFavoritePressed(Movie movie, boolean selected);
     }
 
@@ -58,17 +59,23 @@ public abstract class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.M
             favoriteImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    boolean selected = ! view.isSelected();
-                    mListener.onFavoritePressed((Movie) itemView.getTag(), selected);
+                    boolean selected = !view.isSelected();
+                    Movie movie = (Movie) itemView.getTag();
+                    movie.setFavorite(selected);
+                    mListener.onFavoritePressed(movie, selected);
                     view.setSelected(selected);
                 }
             });
         }
 
         void bind(Movie movie) {
-            Log.d(TAG, "Poster: " + movie.getPosterPath());
-            NetworkUtils.loadImage(mContext, movie.getPosterPath(), movieImageView);
             itemView.setTag(movie);
+
+            Log.d(TAG, "Poster: " + movie.getPosterPath());
+
+            NetworkUtils.loadImage(mContext, movie.getPosterPath(), movieImageView);
+
+            favoriteImageButton.setSelected(movie.isFavorite());
         }
     }
 }

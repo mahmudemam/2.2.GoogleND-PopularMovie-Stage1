@@ -1,6 +1,7 @@
 package com.udacity.examples.popularmovie;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.udacity.examples.popularmovie.data.Movie;
+import com.udacity.examples.popularmovie.utils.ContentProviderUtils;
 import com.udacity.examples.popularmovie.utils.JsonUtils;
 import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
@@ -88,14 +90,19 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
                 sort_order = FetchingMovieTask.TOP_RATED_MOVIES_ID;
                 new FetchingMovieTask().execute();
                 return true;
+            case R.id.menu_favorite_movies:
+                sort_order = FetchingMovieTask.FAVORITE_MOVIES_ID;
+                new FetchingMovieTask().execute();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public class FetchingMovieTask extends AsyncTask<Void, Void, String> {
+    public class FetchingMovieTask extends AsyncTask<Void, Void, Object> {
         static final int POPULAR_MOVIES_ID = 1;
         static final int TOP_RATED_MOVIES_ID = 2;
+        static final int FAVORITE_MOVIES_ID = 3;
 
         @Override
         protected void onPreExecute() {
@@ -103,21 +110,27 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         }
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected Object doInBackground(Void... voids) {
             if (sort_order == POPULAR_MOVIES_ID)
                 return NetworkUtils.loadPopularMovies();
             else if (sort_order == TOP_RATED_MOVIES_ID)
                 return NetworkUtils.loadTopRatedMovies();
+            else if (sort_order == FAVORITE_MOVIES_ID)
+                return ContentProviderUtils.getFavoriteMovies(MainActivity.this);
             else return null;
         }
 
         @Override
-        protected void onPostExecute(String jsonStr) {
+        protected void onPostExecute(Object movies) {
             progressBar.setVisibility(View.INVISIBLE);
 
-            List<Movie> movies = JsonUtils.parseMovies(jsonStr);
-
-            MoviesAdapter adapter = new MoviesAdapter(MainActivity.this, MainActivity.this, movies);
+            MoviesAdapter adapter;
+            if (sort_order != FAVORITE_MOVIES_ID) {
+                List<Movie> movieList = JsonUtils.parseMovies((String) movies);
+                adapter = new MovieListAdapter(MainActivity.this, MainActivity.this, movieList);
+            } else {
+                adapter = new MovieCursorAdapter(MainActivity.this, MainActivity.this, (Cursor) movies);
+            }
             moviesRecyclerView.setAdapter(adapter);
 
             moviesRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));

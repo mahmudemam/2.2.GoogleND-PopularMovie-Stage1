@@ -32,6 +32,7 @@ public class Movie implements Parcelable {
     private boolean adult;
     private String overview;
     private String releaseDate;
+    private boolean isFavorite;
     private List<Video> videos;
     private List<Review> reviews;
 
@@ -44,6 +45,15 @@ public class Movie implements Parcelable {
         backdropPath = parcel.readString();
         overview = parcel.readString();
         releaseDate = parcel.readString();
+    }
+
+    public Movie(int id, String title, String posterPath, String backdropPath, double voteAverage, String overview, String releaseDate) {
+        this.voteAverage = voteAverage;
+        this.title = title;
+        this.posterPath = posterPath;
+        this.backdropPath = backdropPath;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
     }
 
     public Movie(int voteCount, int id, boolean video, double voteAverage, String title, double popularity, String posterPath, String originalLanguage, String originalTitle, int[] genreIds, String backdropPath, boolean adult, String overview, String releaseDate) {
@@ -173,6 +183,14 @@ public class Movie implements Parcelable {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public List<Video> getVideos() {
