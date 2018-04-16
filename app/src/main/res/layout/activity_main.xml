@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/vertical_margin"
-        android:layout_marginEnd="@dimen/horizontal_margin" />
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"/>
 
     <ProgressBar
         android:id="@+id/pb_loading_bar"

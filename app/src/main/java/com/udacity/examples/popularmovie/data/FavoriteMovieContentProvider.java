@@ -29,7 +29,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.MovieEntry.PATH_MOVIES, MOVIES_CODE);
-        matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.MovieEntry.PATH_MOVIES + "/#", MOVIES_CODE);
+        matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.MovieEntry.PATH_MOVIES + "/#", MOVIES_WITH_ID_CODE);
         matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.VideoEntry.PATH_VIDEOS, VIDEOS_CODE);
         matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.ReviewEntry.PATH_REVIEWS, REVIEWS_CODE);
 
@@ -69,7 +69,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
                         projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case MOVIES_WITH_ID_CODE:
-                String selectStmnt = "_id=?";
+                String selectStmnt = "movieId=?";
                 String[] selectArgs = {uri.getPathSegments().get(1)};
 
                 cursor = favoriteMoviesDBHelper.getReadableDatabase().query(FavoriteMoviesContract.MovieEntry.TABLE_NAME,
@@ -90,7 +90,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         int noOfDeleted = 0;
         switch (code) {
             case MOVIES_WITH_ID_CODE:
-                String selectStmnt = "_id=?";
+                String selectStmnt = "movieId=?";
                 String[] selectArgs = {uri.getPathSegments().get(1)};
                 noOfDeleted = favoriteMoviesDBHelper.getWritableDatabase().delete(FavoriteMoviesContract.MovieEntry.TABLE_NAME, selectStmnt, selectArgs);
                 break;

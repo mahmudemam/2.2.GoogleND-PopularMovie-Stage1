@@ -19,7 +19,7 @@ import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String SORT_ORDER_KEY = "SORT_ORDER";
     private RecyclerView moviesRecyclerView;
@@ -53,13 +53,21 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnI
     }
 
     @Override
-    public void onClick(Movie movie) {
+    public void onImageClicked(Movie movie) {
         Log.d(TAG, "Listener: " + movie.toString());
 
         Intent detailsIntent = new Intent(this, DetailsActivity.class);
         detailsIntent.putExtra(DetailsActivity.INTENT_MOVIE_KEY, movie);
 
         startActivity(detailsIntent);
+    }
+
+    @Override
+    public void onFavoritePressed(Movie movie, boolean selected) {
+        if (selected)
+            ContentProviderUtils.addFavoriteMovie(this, movie);
+        else
+            ContentProviderUtils.removeFavoriteMovie(this, movie);
     }
 
     @Override

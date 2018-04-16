@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class FavoriteMoviesDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "favoritemovie.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public FavoriteMoviesDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -16,6 +16,7 @@ public class FavoriteMoviesDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + FavoriteMoviesContract.MovieEntry.TABLE_NAME + "( "
                 + FavoriteMoviesContract.MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL, "
                 + FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_TITLE + " TEXT NOT NULL, "
                 + FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH + " TEXT NOT NULL, "
                 + FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_BACK_DROP_PATH + " TEXT NOT NULL, "

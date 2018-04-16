@@ -7,37 +7,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
-import java.util.List;
-
 /**
  * Created by Mahmoud Emam on 2/21/18.
  */
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
+public abstract class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
     private static final String TAG = MoviesAdapter.class.getSimpleName();
 
     private final Context mContext;
-    private List<Movie> mMovies;
-    private final OnItemClickListener mListener;
+    private final OnMovieClickListener mListener;
 
-    public interface OnItemClickListener {
-        void onClick(Movie movie);
+    public interface OnMovieClickListener {
+        void onImageClicked(Movie movie);
+        void onFavoritePressed(Movie movie, boolean selected);
     }
 
-    public MoviesAdapter(Context context, OnItemClickListener listener, List<Movie> movies) {
+    MoviesAdapter(Context context, OnMovieClickListener listener) {
         mContext = context;
-        mMovies = movies;
         mListener = listener;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        holder.bind(mMovies.get(position));
     }
 
     @Override
@@ -46,13 +39,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         return new MovieViewHolder(view);
     }
 
-    @Override
-    public int getItemCount() {
-        return mMovies.size();
-    }
-
     class MovieViewHolder extends RecyclerView.ViewHolder {
         private final ImageView movieImageView;
+        private final ImageButton favoriteImageButton;
 
         MovieViewHolder(View view) {
             super(view);
@@ -61,7 +50,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             movieImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onClick((Movie) view.getTag());
+                    mListener.onImageClicked((Movie) itemView.getTag());
+                }
+            });
+
+            favoriteImageButton = view.findViewById(R.id.ib_favorite);
+            favoriteImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean selected = ! view.isSelected();
+                    mListener.onFavoritePressed((Movie) itemView.getTag(), selected);
+                    view.setSelected(selected);
                 }
             });
         }
@@ -69,7 +68,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         void bind(Movie movie) {
             Log.d(TAG, "Poster: " + movie.getPosterPath());
             NetworkUtils.loadImage(mContext, movie.getPosterPath(), movieImageView);
-            movieImageView.setTag(movie);
+            itemView.setTag(movie);
         }
     }
 }
