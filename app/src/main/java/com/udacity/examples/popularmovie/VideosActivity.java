@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.udacity.examples.popularmovie.adapters.VideosAdapter;
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.data.Video;
 import com.udacity.examples.popularmovie.utils.JsonUtils;

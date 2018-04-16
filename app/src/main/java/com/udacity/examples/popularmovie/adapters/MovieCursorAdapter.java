@@ -1,4 +1,4 @@
-package com.udacity.examples.popularmovie;
+package com.udacity.examples.popularmovie.adapters;
 
 import android.content.Context;
 import android.database.Cursor;

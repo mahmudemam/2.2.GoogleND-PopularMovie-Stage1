@@ -10,9 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.udacity.examples.popularmovie.adapters.ReviewsAdapter;
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.data.Review;
 import com.udacity.examples.popularmovie.utils.JsonUtils;

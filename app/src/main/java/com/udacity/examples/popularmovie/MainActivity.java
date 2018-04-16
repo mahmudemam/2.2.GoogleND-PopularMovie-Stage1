@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.udacity.examples.popularmovie.adapters.MovieCursorAdapter;
+import com.udacity.examples.popularmovie.adapters.MovieListAdapter;
+import com.udacity.examples.popularmovie.adapters.MoviesAdapter;
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.utils.ContentProviderUtils;
 import com.udacity.examples.popularmovie.utils.JsonUtils;

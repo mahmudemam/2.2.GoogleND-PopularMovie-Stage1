@@ -1,4 +1,4 @@
-package com.udacity.examples.popularmovie;
+package com.udacity.examples.popularmovie.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.udacity.examples.popularmovie.R;
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
