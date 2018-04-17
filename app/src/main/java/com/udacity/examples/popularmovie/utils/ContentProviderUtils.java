@@ -1,5 +1,6 @@
 package com.udacity.examples.popularmovie.utils;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +9,10 @@ import android.util.Log;
 
 import com.udacity.examples.popularmovie.data.FavoriteMoviesContract;
 import com.udacity.examples.popularmovie.data.Movie;
+import com.udacity.examples.popularmovie.data.Review;
+import com.udacity.examples.popularmovie.data.Video;
+
+import java.util.List;
 
 public class ContentProviderUtils {
     private static final String TAG = ContentProviderUtils.class.getSimpleName();
@@ -16,21 +21,59 @@ public class ContentProviderUtils {
         return context.getContentResolver().query(FavoriteMoviesContract.MovieEntry.CONTENT_URI, null, null, null, null);
     }
 
+    public static Cursor getVideos(Context context, Movie movie) {
+        Uri uri = FavoriteMoviesContract.VideoEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(movie.getId())).build();
+        return context.getContentResolver().query(uri, null, null, null, null);
+    }
+
+    public static Cursor getReviews(Context context, Movie movie) {
+        Uri uri = FavoriteMoviesContract.ReviewEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(movie.getId())).build();
+        return context.getContentResolver().query(uri, null, null, null, null);
+    }
+
     public static void addFavoriteMovie(Context context, Movie movie) {
         final String M = "addFavoriteMovie: ";
         Log.v(TAG, M + "Started, movie=" + movie);
 
-        ContentValues cv = new ContentValues();
-        cv.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_TITLE, movie.getTitle());
-        cv.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
-        cv.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH, movie.getPosterPath());
-        cv.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_BACK_DROP_PATH, movie.getBackdropPath());
-        cv.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_RATE, movie.getVoteAverage());
-        cv.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, movie.getReleaseDate());
-        cv.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_OVERVIEW, movie.getOverview());
-        Log.v(TAG, M + "cv=" + cv);
+        ContentValues movieCV = new ContentValues();
+        movieCV.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_TITLE, movie.getTitle());
+        movieCV.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
+        movieCV.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH, movie.getPosterPath());
+        movieCV.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_BACK_DROP_PATH, movie.getBackdropPath());
+        movieCV.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_RATE, movie.getVoteAverage());
+        movieCV.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, movie.getReleaseDate());
+        movieCV.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_OVERVIEW, movie.getOverview());
+        Log.v(TAG, M + "cv=" + movieCV);
 
-        context.getContentResolver().insert(FavoriteMoviesContract.MovieEntry.CONTENT_URI, cv);
+        Uri movieUri = context.getContentResolver().insert(FavoriteMoviesContract.MovieEntry.CONTENT_URI, movieCV);
+        Log.d(TAG, M + "movieUri=" + movieUri);
+
+        long movieId = ContentUris.parseId(movieUri);
+        Log.d(TAG, M + "movieId=" + movieId);
+
+        /*** exception here due to press favorite icon in details ****/
+        List<Video> videos = movie.getVideos();
+        Log.d(TAG, M + "videos=" + videos);
+        for (Video video: videos) {
+            ContentValues videoCV = new ContentValues();
+            videoCV.put(FavoriteMoviesContract.VideoEntry.COLUMN_MOVIE_ID, movie.getId());
+            videoCV.put(FavoriteMoviesContract.VideoEntry.COLUMN_VIDEO_NAME, video.getName());
+            videoCV.put(FavoriteMoviesContract.VideoEntry.COLUMN_VIDEO_KEY, video.getKey());
+            videoCV.put(FavoriteMoviesContract.VideoEntry.COLUMN_VIDEO_TYPE, video.getType());
+
+            context.getContentResolver().insert(FavoriteMoviesContract.VideoEntry.CONTENT_URI, videoCV);
+        }
+
+        List<Review> reviews = movie.getReviews();
+        Log.d(TAG, M + "reviews=" + reviews);
+        for (Review review: reviews) {
+            ContentValues reviewCV = new ContentValues();
+            reviewCV.put(FavoriteMoviesContract.ReviewEntry.COLUMN_MOVIE_ID, movie.getId());
+            reviewCV.put(FavoriteMoviesContract.ReviewEntry.COLUMN_REVIEW_AUTHOR, review.getAuthor());
+            reviewCV.put(FavoriteMoviesContract.ReviewEntry.COLUMN_REVIEW_CONTENT, review.getComment());
+
+            context.getContentResolver().insert(FavoriteMoviesContract.ReviewEntry.CONTENT_URI, reviewCV);
+        }
 
         Log.v(TAG, M + "Finished");
     }

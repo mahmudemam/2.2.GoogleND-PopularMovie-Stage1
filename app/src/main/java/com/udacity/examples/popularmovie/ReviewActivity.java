@@ -15,12 +15,14 @@ import android.widget.Toast;
 import com.udacity.examples.popularmovie.adapters.ReviewsAdapter;
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.data.Review;
+import com.udacity.examples.popularmovie.utils.ContentProviderUtils;
+import com.udacity.examples.popularmovie.utils.CursorUtils;
 import com.udacity.examples.popularmovie.utils.JsonUtils;
 import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
 import java.util.List;
 
-public class ReviewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
+public class ReviewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Review>> {
     public static final String INTENT_KEY_MOVIE = "MOVIE";
     public static final String BUNDLE_KEY_MOVIE_ID = "MOVIE_ID";
     private static final int MOVIE_DETAILS_LOADER_ID = 200;
@@ -59,17 +61,19 @@ public class ReviewActivity extends AppCompatActivity implements LoaderManager.L
 
     @NonNull
     @Override
-    public Loader onCreateLoader(int id, @Nullable final Bundle args) {
-        return new AsyncTaskLoader(this) {
-            private String reviewsStr = null;
+    public Loader<List<Review>> onCreateLoader(int id, @Nullable final Bundle args) {
+        return new AsyncTaskLoader<List<Review>>(this) {
+            private List<Review> reviewsStr = null;
 
             @Nullable
             @Override
-            public Object loadInBackground() {
+            public List<Review> loadInBackground() {
                 if (args == null || !args.containsKey(BUNDLE_KEY_MOVIE_ID))
                     return null;
-
-                return NetworkUtils.loadReviews(args.getInt(BUNDLE_KEY_MOVIE_ID));
+                if (movie.isFavorite())
+                    return CursorUtils.parseReviews(ContentProviderUtils.getReviews(ReviewActivity.this, movie));
+                else
+                    return JsonUtils.parseReviews(NetworkUtils.loadReviews(args.getInt(BUNDLE_KEY_MOVIE_ID)));
             }
 
             @Override
@@ -82,24 +86,20 @@ public class ReviewActivity extends AppCompatActivity implements LoaderManager.L
             }
 
             @Override
-            public void deliverResult(@Nullable Object data) {
-                reviewsStr = (String) data;
+            public void deliverResult(@Nullable List<Review> data) {
+                reviewsStr = data;
                 super.deliverResult(data);
             }
         };
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader loader) {
+    public void onLoaderReset(@NonNull Loader<List<Review>> loader) {
 
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader loader, Object data) {
-        if (data == null)
-            return;
-
-        List<Review> reviews = JsonUtils.parseReviews((String) data);
+    public void onLoadFinished(@NonNull Loader<List<Review>> loader, List<Review> reviews) {
         if (reviews == null || reviews.size() == 0) {
             Toast.makeText(this, "There is no reviews for " + movie.getTitle(), Toast.LENGTH_SHORT).show();
             finish();

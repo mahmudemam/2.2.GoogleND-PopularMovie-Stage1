@@ -14,12 +14,14 @@ import android.widget.Toast;
 import com.udacity.examples.popularmovie.adapters.VideosAdapter;
 import com.udacity.examples.popularmovie.data.Movie;
 import com.udacity.examples.popularmovie.data.Video;
+import com.udacity.examples.popularmovie.utils.ContentProviderUtils;
+import com.udacity.examples.popularmovie.utils.CursorUtils;
 import com.udacity.examples.popularmovie.utils.JsonUtils;
 import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
 import java.util.List;
 
-public class VideosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
+public class VideosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Video>> {
     public static final String INTENT_KEY_MOVIE = "MOVIE";
     public static final String BUNDLE_KEY_MOVIE_ID = "MOVIE_ID";
     private static final int MOVIE_DETAILS_LOADER_ID = 100;
@@ -57,29 +59,33 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public Loader onCreateLoader(int i, final Bundle bundle) {
-        return new AsyncTaskLoader(this) {
-            private String videosStr = null;
+    public Loader<List<Video>> onCreateLoader(int i, final Bundle bundle) {
+        return new AsyncTaskLoader<List<Video>>(this) {
+            private List<Video> videos = null;
 
             @Override
-            public Object loadInBackground() {
+            public List<Video> loadInBackground() {
                 if (bundle == null || !bundle.containsKey(BUNDLE_KEY_MOVIE_ID))
                     return null;
-                else
-                    return NetworkUtils.loadVideos(bundle.getInt(BUNDLE_KEY_MOVIE_ID));
+                else {
+                    if (movie.isFavorite())
+                        return CursorUtils.parseVideos(ContentProviderUtils.getVideos(VideosActivity.this, movie));
+                    else
+                        return JsonUtils.parseVideos(NetworkUtils.loadVideos(bundle.getInt(BUNDLE_KEY_MOVIE_ID)));
+                }
             }
 
             @Override
-            public void deliverResult(Object data) {
-                videosStr = (String) data;
+            public void deliverResult(List<Video> data) {
+                videos = data;
 
                 super.deliverResult(data);
             }
 
             @Override
             protected void onStartLoading() {
-                if (videosStr != null) {
-                    deliverResult(videosStr);
+                if (videos != null) {
+                    deliverResult(videos);
                 } else {
                     forceLoad();
                 }
@@ -88,14 +94,12 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public void onLoaderReset(Loader loader) {
+    public void onLoaderReset(Loader<List<Video>> loader) {
 
     }
 
     @Override
-    public void onLoadFinished(Loader loader, Object o) {
-        String jsonStr = (String) o;
-        List<Video> videos = JsonUtils.parseVideos(jsonStr);
+    public void onLoadFinished(Loader<List<Video>> loader, List<Video> videos) {
         if (videos == null || videos.size() == 0) {
             Toast.makeText(this, "There is no videos for " + movie.getTitle(), Toast.LENGTH_SHORT).show();
             finish();

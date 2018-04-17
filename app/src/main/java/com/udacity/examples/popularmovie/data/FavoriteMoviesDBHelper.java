@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class FavoriteMoviesDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "favoritemovie.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public FavoriteMoviesDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,7 +31,7 @@ public class FavoriteMoviesDBHelper extends SQLiteOpenHelper {
                 + FavoriteMoviesContract.VideoEntry.COLUMN_VIDEO_NAME + " TEXT NOT NULL, "
                 + FavoriteMoviesContract.VideoEntry.COLUMN_VIDEO_KEY + " TEXT NOT NULL, "
                 + FavoriteMoviesContract.VideoEntry.COLUMN_VIDEO_TYPE + " TEXT NOT NULL, "
-                + " FOREIGN KEY ("+ FavoriteMoviesContract.VideoEntry.COLUMN_MOVIE_ID +") REFERENCES " + FavoriteMoviesContract.MovieEntry.TABLE_NAME + "(" + FavoriteMoviesContract.MovieEntry._ID + ")"
+                + " FOREIGN KEY ("+ FavoriteMoviesContract.VideoEntry.COLUMN_MOVIE_ID +") REFERENCES " + FavoriteMoviesContract.MovieEntry.TABLE_NAME + "(" + FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_ID + ")"
                 + ");";
 
         final String SQL_CREATE_REVIEW_TABLE = "CREATE TABLE " + FavoriteMoviesContract.ReviewEntry.TABLE_NAME + "( "
@@ -39,7 +39,7 @@ public class FavoriteMoviesDBHelper extends SQLiteOpenHelper {
                 + FavoriteMoviesContract.ReviewEntry.COLUMN_MOVIE_ID + " TEXT NOT NULL, "
                 + FavoriteMoviesContract.ReviewEntry.COLUMN_REVIEW_AUTHOR + " TEXT NOT NULL, "
                 + FavoriteMoviesContract.ReviewEntry.COLUMN_REVIEW_CONTENT + " TEXT NOT NULL, "
-                + " FOREIGN KEY ("+ FavoriteMoviesContract.ReviewEntry.COLUMN_MOVIE_ID +") REFERENCES " + FavoriteMoviesContract.MovieEntry.TABLE_NAME + "(" + FavoriteMoviesContract.MovieEntry._ID + ")"
+                + " FOREIGN KEY ("+ FavoriteMoviesContract.ReviewEntry.COLUMN_MOVIE_ID +") REFERENCES " + FavoriteMoviesContract.MovieEntry.TABLE_NAME + "(" + FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_ID + ")"
                 + ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);

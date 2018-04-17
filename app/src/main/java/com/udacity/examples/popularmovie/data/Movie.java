@@ -203,6 +203,14 @@ public class Movie implements Parcelable {
         this.videos = videos;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -221,6 +229,8 @@ public class Movie implements Parcelable {
                 ", overview='" + overview + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
                 ", isFavorite='" + isFavorite + '\'' +
+                ", videos='" + videos + '\'' +
+                ", reviews='" + reviews + '\'' +
                 '}';
     }
 

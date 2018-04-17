@@ -17,7 +17,9 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     private static final int MOVIES_CODE = 100;
     private static final int MOVIES_WITH_ID_CODE = 101;
     private static final int VIDEOS_CODE = 200;
+    private static final int VIDEOS_WITH_ID_CODE = 201;
     private static final int REVIEWS_CODE = 300;
+    private static final int REVIEWS_WITH_ID_CODE = 301;
 
     public static final UriMatcher URI_MATCHER = buildUriMatcher();
 
@@ -33,7 +35,9 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.MovieEntry.PATH_MOVIES, MOVIES_CODE);
         matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.MovieEntry.PATH_MOVIES + "/#", MOVIES_WITH_ID_CODE);
         matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.VideoEntry.PATH_VIDEOS, VIDEOS_CODE);
+        matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.VideoEntry.PATH_VIDEOS + "/#", VIDEOS_WITH_ID_CODE);
         matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.ReviewEntry.PATH_REVIEWS, REVIEWS_CODE);
+        matcher.addURI(FavoriteMoviesContract.CONTENT_AUTHORITY, FavoriteMoviesContract.ReviewEntry.PATH_REVIEWS + "/#", REVIEWS_WITH_ID_CODE);
 
         return matcher;
     }
@@ -44,9 +48,23 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         int code = URI_MATCHER.match(uri);
         switch (code) {
             case MOVIES_CODE:
-                long id = favoriteMoviesDBHelper.getWritableDatabase().insert(FavoriteMoviesContract.MovieEntry.TABLE_NAME, null, contentValues);
-                if (id > 0)
-                    ContentUris.withAppendedId(uri, id);
+                long movieId = favoriteMoviesDBHelper.getWritableDatabase().insert(FavoriteMoviesContract.MovieEntry.TABLE_NAME, null, contentValues);
+                if (movieId > 0)
+                    uri = ContentUris.withAppendedId(FavoriteMoviesContract.MovieEntry.CONTENT_URI, movieId);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            case VIDEOS_CODE:
+                long videoId = favoriteMoviesDBHelper.getWritableDatabase().insert(FavoriteMoviesContract.VideoEntry.TABLE_NAME, null, contentValues);
+                if (videoId > 0)
+                    uri = ContentUris.withAppendedId(FavoriteMoviesContract.VideoEntry.CONTENT_URI, videoId);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            case REVIEWS_CODE:
+                long reviewId = favoriteMoviesDBHelper.getWritableDatabase().insert(FavoriteMoviesContract.ReviewEntry.TABLE_NAME, null, contentValues);
+                if (reviewId > 0)
+                    uri = ContentUris.withAppendedId(FavoriteMoviesContract.ReviewEntry.CONTENT_URI, reviewId);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -71,11 +89,25 @@ public class FavoriteMovieContentProvider extends ContentProvider {
                         projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case MOVIES_WITH_ID_CODE:
-                String selectStmnt = "movieId=?";
-                String[] selectArgs = {uri.getPathSegments().get(1)};
+                String movieWhereStmnt = "movieId=?";
+                String[] movieWhereArgs = {uri.getPathSegments().get(1)};
 
                 cursor = favoriteMoviesDBHelper.getReadableDatabase().query(FavoriteMoviesContract.MovieEntry.TABLE_NAME,
-                        projection, selectStmnt, selectArgs, null, null, sortOrder);
+                        projection, movieWhereStmnt, movieWhereArgs, null, null, sortOrder);
+                break;
+            case VIDEOS_WITH_ID_CODE:
+                String videoWhereStmnt = "movieId=?";
+                String[] videoWhereArgs = {uri.getPathSegments().get(1)};
+
+                cursor = favoriteMoviesDBHelper.getReadableDatabase().query(FavoriteMoviesContract.VideoEntry.TABLE_NAME,
+                        projection, videoWhereStmnt, videoWhereArgs, null, null, sortOrder);
+                break;
+            case REVIEWS_WITH_ID_CODE:
+                String reviewWhereStmnt = "movieId=?";
+                String[] reviewWhereArgs = {uri.getPathSegments().get(1)};
+
+                cursor = favoriteMoviesDBHelper.getReadableDatabase().query(FavoriteMoviesContract.ReviewEntry.TABLE_NAME,
+                        projection, reviewWhereStmnt, reviewWhereArgs, null, null, sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Not yet implemented");
@@ -97,6 +129,8 @@ public class FavoriteMovieContentProvider extends ContentProvider {
             case MOVIES_WITH_ID_CODE:
                 String selectStmnt = "movieId=?";
                 String[] selectArgs = {uri.getPathSegments().get(1)};
+                favoriteMoviesDBHelper.getWritableDatabase().delete(FavoriteMoviesContract.VideoEntry.TABLE_NAME, selectStmnt, selectArgs);
+                favoriteMoviesDBHelper.getWritableDatabase().delete(FavoriteMoviesContract.ReviewEntry.TABLE_NAME, selectStmnt, selectArgs);
                 noOfDeleted = favoriteMoviesDBHelper.getWritableDatabase().delete(FavoriteMoviesContract.MovieEntry.TABLE_NAME, selectStmnt, selectArgs);
                 break;
             default:

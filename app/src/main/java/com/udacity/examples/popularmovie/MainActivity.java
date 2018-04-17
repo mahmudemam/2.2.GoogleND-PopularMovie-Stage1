@@ -1,5 +1,8 @@
 package com.udacity.examples.popularmovie;
 
+
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -18,13 +21,14 @@ import com.udacity.examples.popularmovie.adapters.MovieCursorAdapter;
 import com.udacity.examples.popularmovie.adapters.MovieListAdapter;
 import com.udacity.examples.popularmovie.adapters.MoviesAdapter;
 import com.udacity.examples.popularmovie.data.Movie;
+import com.udacity.examples.popularmovie.tasks.MovieAsyncTaskLoader;
 import com.udacity.examples.popularmovie.utils.ContentProviderUtils;
 import com.udacity.examples.popularmovie.utils.JsonUtils;
 import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener {
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener, LoaderManager.LoaderCallbacks<Movie> {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String SORT_ORDER_KEY = "SORT_ORDER";
     private RecyclerView moviesRecyclerView;
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         }
     }
 
+    /** Use shared preference to save the movies **/
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -73,9 +79,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
     @Override
     public void onFavoritePressed(Movie movie, boolean selected) {
-        if (selected)
-            ContentProviderUtils.addFavoriteMovie(this, movie);
-        else
+        if (selected) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(BUNDLE_KEY_MOVIE_ID, movie);
+
+            LoaderManager loaderManager = getSupportLoaderManager();
+            if (loaderManager.getLoader(MOVIE_TASK_LOADER_ID) != null) {
+                getSupportLoaderManager().restartLoader(MOVIE_TASK_LOADER_ID, bundle, this);
+            } else {
+                getSupportLoaderManager().initLoader(MOVIE_TASK_LOADER_ID, bundle, this);
+            }
+        } else
             ContentProviderUtils.removeFavoriteMovie(this, movie);
 
         adapter.dataChanged(movies);
@@ -106,6 +120,24 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static final String BUNDLE_KEY_MOVIE_ID = "MOVIE_ID";
+    private static final int MOVIE_TASK_LOADER_ID = 1;
+
+    @Override
+    public Loader onCreateLoader(int i, Bundle bundle) {
+        return new MovieAsyncTaskLoader(this, (Movie) bundle.getParcelable(BUNDLE_KEY_MOVIE_ID));
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Movie o) {
+        ContentProviderUtils.addFavoriteMovie(this, o);
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+
     }
 
     public class FetchingMovieTask extends AsyncTask<Void, Void, Object> {
