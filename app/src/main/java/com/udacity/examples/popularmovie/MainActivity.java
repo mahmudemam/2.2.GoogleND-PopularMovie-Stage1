@@ -48,8 +48,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
             }
             new FetchingMovieTask().execute();
         } else {
-            Toast.makeText(this, "Network Connection is not Active", Toast.LENGTH_SHORT).show();
-            finish();
+            Toast.makeText(this, "Network Connection is not Active, favorites are displayed", Toast.LENGTH_SHORT).show();
+            sort_order = FetchingMovieTask.FAVORITE_MOVIES_ID;
+            new FetchingMovieTask().execute();
         }
     }
 
