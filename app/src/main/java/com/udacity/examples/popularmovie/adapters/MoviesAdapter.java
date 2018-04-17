@@ -55,6 +55,7 @@ public abstract class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.M
                 @Override
                 public void onClick(View view) {
                     mListener.onImageClicked((Movie) itemView.getTag());
+                    Log.v(TAG, "Movie Img: " + itemView.getTag());
                 }
             });
 

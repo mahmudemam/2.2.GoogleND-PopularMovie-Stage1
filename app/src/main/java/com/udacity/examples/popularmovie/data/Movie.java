@@ -45,6 +45,7 @@ public class Movie implements Parcelable {
         backdropPath = parcel.readString();
         overview = parcel.readString();
         releaseDate = parcel.readString();
+        isFavorite = parcel.readInt() == 1;
     }
 
     public Movie(int id, String title, String posterPath, String backdropPath, double voteAverage, String overview, String releaseDate) {
@@ -219,6 +220,7 @@ public class Movie implements Parcelable {
                 ", adult=" + adult +
                 ", overview='" + overview + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
+                ", isFavorite='" + isFavorite + '\'' +
                 '}';
     }
 
@@ -232,6 +234,7 @@ public class Movie implements Parcelable {
         parcel.writeString(backdropPath);
         parcel.writeString(overview);
         parcel.writeString(releaseDate);
+        parcel.writeInt(isFavorite ? 1 : 0);
     }
 
     @Override

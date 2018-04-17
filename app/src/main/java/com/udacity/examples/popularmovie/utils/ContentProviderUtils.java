@@ -55,7 +55,7 @@ public class ContentProviderUtils {
 
         Cursor cursor = context.getContentResolver().query(movieWithIdUri, null, null, null, null);
 
-        Log.v(TAG, M + "Finished");
+        Log.v(TAG, M + "Finished, isFavorite=" + (cursor != null && cursor.getCount() == 1));
         return  (cursor != null && cursor.getCount() == 1);
     }
 }
