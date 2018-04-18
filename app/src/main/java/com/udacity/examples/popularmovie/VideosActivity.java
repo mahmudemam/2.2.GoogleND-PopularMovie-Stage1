@@ -117,9 +117,13 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
                         if (video == null)
                             return;
 
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + video.getKey()));
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(intent);
+                        if (NetworkUtils.isNetworkActive(VideosActivity.this)) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + video.getKey()));
+                            if (intent.resolveActivity(getPackageManager()) != null) {
+                                startActivity(intent);
+                            }
+                        } else {
+                            Toast.makeText(VideosActivity.this, "The network is inactive", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
