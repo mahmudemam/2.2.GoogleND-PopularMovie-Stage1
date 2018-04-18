@@ -2,6 +2,8 @@ package com.udacity.examples.popularmovie.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ShareCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +48,7 @@ public abstract class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.M
     class MovieViewHolder extends RecyclerView.ViewHolder {
         private final ImageView movieImageView;
         private final ImageButton favoriteImageButton;
+        private final ImageButton shareImageButton;
 
         MovieViewHolder(View view) {
             super(view);
@@ -73,6 +76,22 @@ public abstract class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.M
                     mListener.onFavoritePressed(movie, selected);
 
                     Log.v(TAG, "Fav Button: " + view.isSelected());
+                }
+            });
+
+            shareImageButton = view.findViewById(R.id.ib_share);
+            shareImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Movie movie = (Movie) itemView.getTag();
+
+                    ShareCompat.IntentBuilder.from((AppCompatActivity) mContext)
+                            .setChooserTitle("Share")
+                            .setType("text/plain")
+                            .setText("Movie '" + movie.getTitle() + "' got rate:" + movie.getVoteAverage())
+                            .startChooser();
+
+                    Log.v(TAG, "Share Button");
                 }
             });
         }

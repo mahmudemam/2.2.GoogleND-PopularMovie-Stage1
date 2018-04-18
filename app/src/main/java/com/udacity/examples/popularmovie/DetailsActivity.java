@@ -3,6 +3,7 @@ package com.udacity.examples.popularmovie;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -83,7 +84,8 @@ public class DetailsActivity extends AppCompatActivity implements MovieAsyncTask
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.details_menu, menu);
-        MenuItem item = menu.getItem(0);
+
+        MenuItem item = menu.findItem(R.id.menu_details_favorite);;
         if (movie.isFavorite()) {
             item.setIcon(R.drawable.ic_favorite_selected_24dp);
             item.setChecked(true);
@@ -122,6 +124,13 @@ public class DetailsActivity extends AppCompatActivity implements MovieAsyncTask
                         getSupportLoaderManager().initLoader(MOVIE_TASK_LOADER_ID, bundle, new MovieAsyncTaskLoader(this, this));
                     }
                 }
+                return true;
+            case R.id.menu_details_share:
+                ShareCompat.IntentBuilder.from((AppCompatActivity) this)
+                        .setChooserTitle("Share")
+                        .setType("text/plain")
+                        .setText("Movie '" + movie.getTitle() + "' got rate:" + movie.getVoteAverage())
+                        .startChooser();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
