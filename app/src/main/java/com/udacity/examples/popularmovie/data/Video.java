@@ -4,13 +4,25 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by noname on 4/9/18.
+ * Created by Mahmoud Emam on 4/9/18.
  */
 
 public class Video implements Parcelable {
-    String name;
-    String key;
-    String type;
+    public static final Creator<Video> CREATOR = new Creator<Video>() {
+        @Override
+        public Video createFromParcel(Parcel parcel) {
+            return new Video(parcel);
+        }
+
+        @Override
+        public Video[] newArray(int i) {
+            return new Video[i];
+        }
+    };
+
+    private String name;
+    private String key;
+    private String type;
 
     public Video(String name, String key, String type) {
         this.name = name;

@@ -18,7 +18,7 @@ import com.udacity.examples.popularmovie.utils.NetworkUtils;
 import java.util.List;
 
 /**
- * Created by noname on 4/17/18.
+ * Created by Mahmoud Emam on 4/17/18.
  */
 
 public class MovieAsyncTaskLoader implements LoaderManager.LoaderCallbacks<Movie>{
@@ -39,7 +39,6 @@ public class MovieAsyncTaskLoader implements LoaderManager.LoaderCallbacks<Movie
 
     @Override
     public Loader<Movie> onCreateLoader(int i, final Bundle bundle) {
-        //return new MovieAsyncTaskLoader(getContext(), (Movie) bundle.getParcelable(ASYNC_LOADER_MOVIE_BUNDLE_ID));
         return new AsyncTaskLoader<Movie>(context) {
             private Movie movie = null;
 
