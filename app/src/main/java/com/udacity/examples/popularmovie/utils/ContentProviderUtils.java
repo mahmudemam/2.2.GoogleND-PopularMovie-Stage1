@@ -51,31 +51,44 @@ public class ContentProviderUtils {
         long movieId = ContentUris.parseId(movieUri);
         Log.d(TAG, M + "movieId=" + movieId);
 
-        /*** exception here due to press favorite icon in details ****/
-        List<Video> videos = movie.getVideos();
+        Log.v(TAG, M + "Finished");
+    }
+
+    public static void addMovieVideos(Context context, int movieId, List<Video> videos) {
+        final String M = "addMovieVideos: ";
+
         Log.d(TAG, M + "videos=" + videos);
+
+        if (videos == null)
+            return;
+
         for (Video video: videos) {
             ContentValues videoCV = new ContentValues();
-            videoCV.put(FavoriteMoviesContract.VideoEntry.COLUMN_MOVIE_ID, movie.getId());
+            videoCV.put(FavoriteMoviesContract.VideoEntry.COLUMN_MOVIE_ID, movieId);
             videoCV.put(FavoriteMoviesContract.VideoEntry.COLUMN_VIDEO_NAME, video.getName());
             videoCV.put(FavoriteMoviesContract.VideoEntry.COLUMN_VIDEO_KEY, video.getKey());
             videoCV.put(FavoriteMoviesContract.VideoEntry.COLUMN_VIDEO_TYPE, video.getType());
 
             context.getContentResolver().insert(FavoriteMoviesContract.VideoEntry.CONTENT_URI, videoCV);
         }
+    }
 
-        List<Review> reviews = movie.getReviews();
+    public static void addMovieReviews(Context context, int movieId, List<Review> reviews) {
+        final String M = "addMovieReviews: ";
+
         Log.d(TAG, M + "reviews=" + reviews);
+
+        if (reviews == null)
+            return;
+
         for (Review review: reviews) {
             ContentValues reviewCV = new ContentValues();
-            reviewCV.put(FavoriteMoviesContract.ReviewEntry.COLUMN_MOVIE_ID, movie.getId());
+            reviewCV.put(FavoriteMoviesContract.ReviewEntry.COLUMN_MOVIE_ID, movieId);
             reviewCV.put(FavoriteMoviesContract.ReviewEntry.COLUMN_REVIEW_AUTHOR, review.getAuthor());
             reviewCV.put(FavoriteMoviesContract.ReviewEntry.COLUMN_REVIEW_CONTENT, review.getComment());
 
             context.getContentResolver().insert(FavoriteMoviesContract.ReviewEntry.CONTENT_URI, reviewCV);
         }
-
-        Log.v(TAG, M + "Finished");
     }
 
     public static void removeFavoriteMovie(Context context, Movie movie) {

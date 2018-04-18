@@ -68,9 +68,10 @@ public abstract class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.M
                     Movie movie = (Movie) itemView.getTag();
                     movie.setFavorite(selected);
 
+                    view.setSelected(selected);
+
                     mListener.onFavoritePressed(movie, selected);
 
-                    view.setSelected(selected);
                     Log.v(TAG, "Fav Button: " + view.isSelected());
                 }
             });

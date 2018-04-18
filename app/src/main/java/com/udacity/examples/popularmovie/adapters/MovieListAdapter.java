@@ -26,6 +26,7 @@ public class MovieListAdapter extends MoviesAdapter {
 
     @Override
     public int getItemCount() {
+        if (mMovies == null) return 0;
         return mMovies.size();
     }
 

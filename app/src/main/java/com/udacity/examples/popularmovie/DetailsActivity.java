@@ -2,6 +2,7 @@ package com.udacity.examples.popularmovie;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -12,11 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.udacity.examples.popularmovie.data.Movie;
+import com.udacity.examples.popularmovie.tasks.MovieAsyncTaskLoader;
 import com.udacity.examples.popularmovie.utils.ContentProviderUtils;
 import com.udacity.examples.popularmovie.utils.NetworkUtils;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements MovieAsyncTaskLoader.MovieAsyncTaskLoaderListener {
     public static final String INTENT_MOVIE_KEY = "MOVIE_KEY";
+    private static final int MOVIE_TASK_LOADER_ID = 1;
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private Movie movie;
@@ -108,10 +111,26 @@ public class DetailsActivity extends AppCompatActivity {
                     movie.setFavorite(true);
 
                     ContentProviderUtils.addFavoriteMovie(this, movie);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(MovieAsyncTaskLoader.ASYNC_LOADER_MOVIE_BUNDLE_ID, movie);
+
+                    LoaderManager loaderManager = getSupportLoaderManager();
+                    if (loaderManager.getLoader(MOVIE_TASK_LOADER_ID) != null) {
+                        getSupportLoaderManager().restartLoader(MOVIE_TASK_LOADER_ID, bundle, new MovieAsyncTaskLoader(this, this));
+                    } else {
+                        getSupportLoaderManager().initLoader(MOVIE_TASK_LOADER_ID, bundle, new MovieAsyncTaskLoader(this, this));
+                    }
                 }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void notify(Movie movie) {
+        ContentProviderUtils.addMovieVideos(this, movie.getId(), movie.getVideos());
+        ContentProviderUtils.addMovieReviews(this, movie.getId(), movie.getReviews());
     }
 }
