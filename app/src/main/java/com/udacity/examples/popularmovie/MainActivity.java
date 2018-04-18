@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         } else
             ContentProviderUtils.removeFavoriteMovie(this, movie);
 
-        adapter.dataChanged(movies);
+        new FetchingMovieTask().execute();
     }
 
     @Override
