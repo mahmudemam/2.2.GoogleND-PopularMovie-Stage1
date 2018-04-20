@@ -1,6 +1,7 @@
 package com.udacity.examples.popularmovie;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -26,7 +27,10 @@ public class ReviewActivity extends AppCompatActivity implements LoaderManager.L
     public static final String INTENT_KEY_MOVIE = "MOVIE";
     public static final String BUNDLE_KEY_MOVIE_ID = "MOVIE_ID";
     private static final int MOVIE_DETAILS_LOADER_ID = 200;
+    private static final String RV_POSITION_KEY = "RV_KEY";
 
+    private RecyclerView reviewRecyclerView;
+    private Parcelable rvSavedState;
     private Movie movie;
 
     @Override
@@ -56,6 +60,23 @@ public class ReviewActivity extends AppCompatActivity implements LoaderManager.L
             loaderManager.restartLoader(MOVIE_DETAILS_LOADER_ID, movieIdBundle, this);
         } else {
             loaderManager.initLoader(MOVIE_DETAILS_LOADER_ID, movieIdBundle, this);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (reviewRecyclerView != null && reviewRecyclerView.getLayoutManager() != null)
+            outState.putParcelable(RV_POSITION_KEY, reviewRecyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(RV_POSITION_KEY)) {
+            rvSavedState = savedInstanceState.getParcelable(RV_POSITION_KEY);
         }
     }
 
@@ -105,11 +126,12 @@ public class ReviewActivity extends AppCompatActivity implements LoaderManager.L
             finish();
         }
 
-        RecyclerView recyclerView = findViewById(R.id.rv_reviews);
+        reviewRecyclerView = findViewById(R.id.rv_reviews);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        reviewRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        reviewRecyclerView.getLayoutManager().onRestoreInstanceState(rvSavedState);
 
         ReviewsAdapter adapter = new ReviewsAdapter(this, reviews);
-        recyclerView.setAdapter(adapter);
+        reviewRecyclerView.setAdapter(adapter);
     }
 }

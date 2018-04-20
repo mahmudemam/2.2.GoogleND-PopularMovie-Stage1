@@ -3,6 +3,7 @@ package com.udacity.examples.popularmovie;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -25,7 +26,10 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
     public static final String INTENT_KEY_MOVIE = "MOVIE";
     public static final String BUNDLE_KEY_MOVIE_ID = "MOVIE_ID";
     private static final int MOVIE_DETAILS_LOADER_ID = 100;
+    private static final String RV_POSITION_KEY = "RV_KEY";
 
+    private RecyclerView videoRecyclerView;
+    private Parcelable rvSavedState;
     private Movie movie;
 
     @Override
@@ -55,6 +59,23 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
             loaderManager.restartLoader(MOVIE_DETAILS_LOADER_ID, movieIdBundle, this);
         } else {
             loaderManager.initLoader(MOVIE_DETAILS_LOADER_ID, movieIdBundle, this);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (videoRecyclerView != null && videoRecyclerView.getLayoutManager() != null)
+            outState.putParcelable(RV_POSITION_KEY, videoRecyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(RV_POSITION_KEY)) {
+            rvSavedState = savedInstanceState.getParcelable(RV_POSITION_KEY);
         }
     }
 
@@ -105,7 +126,7 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
             finish();
         }
 
-        RecyclerView videoRecyclerView = findViewById(R.id.rv_videos);
+        videoRecyclerView = findViewById(R.id.rv_videos);
 
         videoRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
@@ -127,6 +148,8 @@ public class VideosActivity extends AppCompatActivity implements LoaderManager.L
                         }
                     }
                 });
+
+        videoRecyclerView.getLayoutManager().onRestoreInstanceState(rvSavedState);
         videoRecyclerView.setAdapter(adapter);
     }
 }

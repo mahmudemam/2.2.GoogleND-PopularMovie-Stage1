@@ -1,11 +1,12 @@
 package com.udacity.examples.popularmovie;
 
 
-import android.support.v4.app.LoaderManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener, MovieAsyncTaskLoader.MovieAsyncTaskLoaderListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String SORT_ORDER_KEY = "SORT_ORDER";
+    private static final String RV_POSITION_KEY = "RV_KEY";
     private RecyclerView moviesRecyclerView;
     private ProgressBar progressBar;
     private int sort_order = FetchingMovieTask.POPULAR_MOVIES_ID;
@@ -37,10 +39,15 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
     private MoviesAdapter adapter;
     private Object movies;
+    private Parcelable parcelable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final String M = "onCreate: ";
+        Log.d(TAG, M + "Start");
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         moviesRecyclerView = findViewById(R.id.rv_movies);
@@ -63,6 +70,26 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         super.onSaveInstanceState(outState);
 
         outState.putInt(SORT_ORDER_KEY, sort_order);
+        if (moviesRecyclerView != null && moviesRecyclerView.getLayoutManager() != null) {
+            outState.putParcelable(RV_POSITION_KEY, moviesRecyclerView.getLayoutManager().onSaveInstanceState());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        final String M = "onRestoreInstanceState: ";
+        Log.d(TAG, M + "Start");
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(SORT_ORDER_KEY)) {
+                sort_order = savedInstanceState.getInt(SORT_ORDER_KEY);
+            }
+
+            if (savedInstanceState.containsKey(RV_POSITION_KEY)) {
+                parcelable = savedInstanceState.getParcelable(RV_POSITION_KEY);
+            }
+        }
     }
 
     @Override
@@ -164,6 +191,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
             moviesRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));
             moviesRecyclerView.setHasFixedSize(true);
+
+            moviesRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
         }
     }
 }
