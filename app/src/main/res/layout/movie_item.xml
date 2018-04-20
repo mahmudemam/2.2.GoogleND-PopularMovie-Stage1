@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/iv_movie_img"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/img_height"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/poster_content_description"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
